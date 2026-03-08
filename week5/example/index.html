@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BCA Lab Swap</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="swap-container">
+
+    <div class="header">
+        <span>Swap</span>
+    </div>
+
+    <!-- Token A -->
+    <div class="input-group">
+        <div class="input-row">
+            <input type="number" placeholder="0.0" id="input-amount">
+            <div class="token-selector" id="tokenA">ETH</div>
+        </div>
+    </div>
+
+    <!-- Swap direction -->
+    <div class="switch-btn" id="switch">
+        ⇅
+    </div>
+
+    <!-- Token B -->
+    <div class="input-group">
+        <div class="input-row">
+            <input type="number" placeholder="0.0" id="output-amount">
+            <div class="token-selector" id="tokenB">USDT</div>
+        </div>
+    </div>
+
+    <div class="info-row">
+        <span>汇率</span>
+        <span id="price">1 ETH = 3500 USDT</span>
+    </div>
+
+    <button class="swap-btn">Swap</button>
+
+</div>
+
+<script src="main.js"></script>
+
+</body>
+</html>

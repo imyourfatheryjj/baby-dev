@@ -1,170 +1,467 @@
 # 🍼 baby-dev - Week 5 学习任务
 
-> 承接 Week4 对 Uniswap V2 Core 的手写实现与源码对齐，本周进入 **协议落地阶段**。
-> 要求 **将你自己实现的 Uniswap V2 部署到测试网，并提供一个可访问的前端进行真实交互**，完成从「协议实现」到「用户可用」的闭环。
+> 在前几周中，你已经开始接触 **AMM 与 Uniswap 的核心原理**。
+> 但真实的 DeFi 协议除了智能合约，还需要一个 **用户界面（Frontend）** 才能被普通用户使用。
+>
+> 本周我们将开始学习 **Web 前端的基础能力**，并完成一个小项目：
+>
+> **实现一个 Swap UI（仅前端界面）。**
+
+本周重点不是 UI 设计，而是：
+
+> **理解 Web 页面是如何构建和交互的。**
 
 ---
 
-## 🎯 本周目标
+# 🎯 本周目标
 
-1. **将手写的 Uniswap V2 合约部署到测试网**
-   * 使用 Remix 完成部署
-   * 能在区块浏览器中查看状态与事件
-2. **实现最小可用前端（原生）**
-   * 能连接钱包
-   * 能读取合约状态
-   * 能发起真实交易
-3. **跑通完整链路**
-   * 钱包 → 前端 → 合约 → 状态变化
-4. **输出清晰的部署与使用文档**
+1. 理解 Web 前端三大 **基础技术**
 
----
+```
+HTML
+CSS
+JavaScript
+```
 
-## 📘 必做任务
+2. 能够写出一个简单网页
 
-### 1️⃣ 使用 Remix 部署 Uniswap V2 合约（核心任务）
+3. 完成一个 **Swap UI 页面**
 
-> ⚠️ **本周部署工具统一要求使用 Remix**
-> 目标是降低工具复杂度，聚焦协议与交互本身。
-
-#### 部署环境
-
-* Remix IDE：[https://remix.ethereum.org](https://remix.ethereum.org)
-* 钱包：MetaMask
-* 网络：测试网（Sepolia / Holesky 任选）
-
-#### 必须部署的合约
-
-* `Factory`
-* 通过 `Factory.createPair()` 创建的 `Pair`
-* （如 Week4 已实现）最小 Router（非强制）
-
-#### 推荐部署顺序
-
-1. 在 Remix 中编译并部署 `Factory`
-2. 调用 `createPair(tokenA, tokenB)`
-3. 记录返回的 Pair 地址
-4. 在 Remix 中直接调用 Pair：
-
-   * `mint()`（add liquidity）
-   * `swap()`
-   * `burn()`（如已实现）
+4. 将网页 **部署到互联网上访问**
 
 ---
 
-### 2️⃣ Remix 自测要求（必须完成）
+# 📎 推荐学习平台
 
-在 Remix 中，你需要 **手动验证以下行为**：
+### MDN（最权威的前端文档）
 
-* addLiquidity 是否正确铸造 LP
-* swap 后 reserve 是否更新
-* swap 前后是否满足 `x * y = k`（近似）
-* 是否触发以下事件：
+内容覆盖所有前端知识，推荐长期使用。
+学习过程中注意 **逐步学习和整理知识结构**。
 
-  * `Mint`
-  * `Swap`
-  * `Sync`
-* 非法操作是否被 revert（如 0 输出、储备不足）
+[https://developer.mozilla.org/en-US/](https://developer.mozilla.org/en-US/)
 
 ---
 
-### 3️⃣ 原生前端交互（重点-可借助大模型简单实现）
+### 菜鸟教程
 
-> 本周前端的目标不是“好看”，而是 **真实可用**
+适合初学者的教程，特点：
 
-#### 技术要求
+* 简单易懂
+* 入门友好
 
-* 技术栈：
+但需要注意：
 
-  * 原生 HTML + JavaScript
-  * `ethers.js` 或 `viem`
-* 不使用前端框架（React / Vue 等）
+* 内容深度相对较浅
 
-#### 前端最低功能要求
-注：对前端感兴趣的同学可以借助网上的资料进一步学习前端，前端基础相对简单
-
-* 连接钱包（MetaMask）
-* 读取链上数据：
-
-  * `reserve0 / reserve1`
-  * `totalSupply`（如需要）
-* 发起交易：
-
-  * addLiquidity
-  * swap（最简单路径）
-
-> ⚠️ 前端 **必须使用你通过 Remix 部署的真实合约地址**
+[https://www.runoob.com/](https://www.runoob.com/)
 
 ---
 
-## 🧪 提交规范
+### bilibili
 
-### 📁 目录结构建议
+如果阅读文档比较困难，可以通过视频学习。
+
+建议：**尽量选择可以跟着敲代码的教程，而不是只讲概念的课程。**
+
+---
+
+# 📘 本周学习内容
+
+浏览器中的网页通常由三部分组成：
+
+```
+HTML → 页面结构
+CSS → 页面样式
+JavaScript → 页面逻辑
+```
+
+可以简单理解为：
+
+```
+HTML = 骨架
+CSS = 外观
+JavaScript = 行为
+```
+
+---
+
+# 1️⃣ HTML：构建页面结构
+
+HTML 用来描述网页的 **结构和内容**。
+
+例如：
+
+```html
+<h1>Mini Swap</h1>
+
+<input placeholder="Token A Amount">
+
+<input placeholder="Token B Amount">
+
+<button>Swap</button>
+```
+
+浏览器会渲染为：
+
+```
+标题
+两个输入框
+一个按钮
+```
+
+---
+
+## 本周需要掌握的标签
+
+```
+div
+span
+h1
+p
+input
+button
+```
+
+建议理解以下概念：
+
+```
+id
+class
+元素嵌套
+```
+
+简单示例：
+
+```html
+<div class="container">
+  <h1>Mini Swap</h1>
+  <input placeholder="Token A Amount">
+  <button>Swap</button>
+</div>
+```
+
+---
+
+# 2️⃣ CSS：控制页面样式
+
+CSS 用来控制网页的 **视觉效果**。
+
+例如：
+
+```
+颜色
+布局
+间距
+字体
+```
+
+示例：
+
+```css
+.container {
+  width: 400px;
+  margin: auto;
+}
+
+button {
+  background: black;
+  color: white;
+}
+```
+
+---
+
+## 本周需要理解
+
+```
+class
+margin
+padding
+border
+flex
+```
+
+建议重点了解：
+
+```
+flex 布局
+```
+
+因为现代前端布局 **大多依赖 flex 或 grid**。
+
+简单示例：
+
+```css
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+```
+
+---
+
+# 3️⃣ JavaScript：实现交互
+
+JavaScript 让网页可以 **响应用户操作**。
+
+例如：
+
+```
+点击按钮
+读取输入框
+修改页面内容
+```
+
+示例：
+
+```javascript
+const button = document.querySelector("#swap")
+
+button.onclick = () => {
+  console.log("Swap clicked")
+}
+```
+
+---
+
+## 本周需要理解
+
+```
+变量
+函数
+DOM 操作
+事件监听
+```
+
+例如：
+
+```javascript
+const input = document.querySelector("#tokenA")
+const output = document.querySelector("#tokenB")
+
+input.oninput = () => {
+  const value = input.value
+  output.value = value * 100
+}
+```
+
+---
+
+# 🧪 本周项目：实现 Swap UI
+
+你需要实现一个 **简单的 Swap 页面**。
+
+---
+
+# 📌 参考示例（可选）
+
+为了帮助大家理解 Swap UI 的基本结构，仓库中提供了一个 **简单示例页面**。
+
+你可以通过示例理解：
+
+```
+HTML 页面结构
+CSS 页面布局
+JavaScript 交互逻辑
+```
+
+示例中包含的功能：
+
+```
+输入 Token 数量
+简单的汇率计算
+Swap 方向切换
+基础样式布局
+```
+
+⚠️ **注意**
+
+* 示例代码 **仅供参考学习**
+* 不要求完全复制示例 UI
+* 可以根据自己的理解 **自由设计界面**
+
+本周重点是：
+
+> **理解 HTML + CSS + JavaScript 如何协同构建一个网页应用**
+
+只要实现以下核心功能即可：
+
+```
+输入 Token A
+自动计算 Token B
+Swap 方向切换
+基本 UI 样式
+```
+
+---
+
+## 如何运行示例项目
+
+1. 打开 `example` 文件夹
+2. 在 VSCode 中打开 `index.html`
+3. 右键点击文件
+4. 选择：
+
+```
+Open with Live Server
+```
+
+浏览器会自动打开示例页面。
+
+---
+
+# 必须实现的功能
+
+## 1️⃣ 输入 Token A 数量
+
+用户可以输入：
+
+```
+1
+2
+10
+```
+
+---
+
+## 2️⃣ 自动计算 Token B
+
+使用一个简单公式：
+
+```
+tokenB = tokenA * 100
+```
+
+示例：
+
+```
+输入 1
+输出 100
+```
+
+目的是练习：
+
+```
+读取输入框
+更新另一个输入框
+```
+
+---
+
+## 3️⃣ Swap 方向按钮
+
+增加一个按钮：
+
+```
+⇅
+```
+
+点击后交换：
+
+```
+Token A
+Token B
+```
+
+例如：
+
+```
+ETH → USDC
+```
+
+变成：
+
+```
+USDC → ETH
+```
+
+---
+
+# ⭐ UI 优化（可选）
+
+如果时间充足，可以尝试优化界面，例如：
+
+```
+卡片布局
+圆角按钮
+hover 效果
+更好的输入框样式
+```
+
+---
+
+# 📁 目录结构
 
 ```
 week5/<your_name>/
-├── frontend/
-│   ├── index.html
-│   ├── main.js
-│   └── README.md
-├── deployment.md
+├── index.html
+├── style.css
+├── main.js
 └── README.md
 ```
 
 ---
 
-### 📄 README.md 内容建议
+# 📄 README.md 内容
 
-* 本周目标与完成情况
-* 测试网名称
-* 合约地址：
+需要说明：
 
-  * Factory
-  * Pair
-* 前端访问地址（Vercel）
-* 已支持的功能 / 未支持的功能
-* 本周最大问题 & 收获
+* 项目介绍
+* 页面截图
+* Swap UI 实现逻辑
+* 使用的技术
+* 部署地址
 
 ---
 
-### 📄 deployment.md
+# ✅ 验收清单
 
-必须清楚记录：
+必须全部满足：
 
-* 使用的测试网
-* Factory 合约地址
-* Pair 合约地址
-* `createPair` 交易 hash
-* 至少一次：
-
-  * addLiquidity 交易 hash
-  * swap 交易 hash
-* 部署 & 调用过程中遇到的问题（简要）
+* [ ] 完成 Swap UI 页面
+* [ ] Token A 输入可以更新 Token B
+* [ ] 实现 Swap 方向切换
+* [ ] 页面样式基本可用
+* [ ] 成功部署网页
+* [ ] README 完整
 
 ---
 
-## ✅ 验收清单（必须全部满足）
+# 📌 进阶学习内容（可选）
 
-* [ ] 使用 Remix 成功部署 Factory
-* [ ] 使用 Remix 成功创建 Pair
-* [ ] Remix 中完成 addLiquidity
-* [ ] Remix 中完成 swap
-* [ ] 前端可读取 reserve 数据
-* [ ] 前端可发起交易
-* [ ] README + deployment.md 完整
+如果你对前端感兴趣，可以进一步学习：
 
----
+```
+React
+```
 
-## 📎 参考资料
+React 是目前最主流的前端框架之一。
 
-* Remix 官方文档：[https://remix-ide.readthedocs.io](https://remix-ide.readthedocs.io)
-* ethers.js：[https://docs.ethers.org](https://docs.ethers.org)
-* Vercel：[https://vercel.com/docs](https://vercel.com/docs)
-* Uniswap Interface（仅参考交互方式）
+很多 Web3 项目（例如 Uniswap）都使用 React 构建前端。
+
+但本课程 **不会强制要求学习 React**。
 
 ---
 
-> **Week5 的完成标志不是“代码更多”，而是：**
-> > **“你写的 AMM，已经可以被任何人通过浏览器真实使用。”**
-> 从这一周开始，你已经具备了一个 **可展示、可讲解、可验证** 的完整 Web3 项目。
+# 🧠 本周真正的目标
 
+本周不是让你成为前端工程师。
+
+而是：
+
+> **当你需要为区块链项目写一个前端界面时，你可以自己完成。**
+
+在接下来的几周中，你将会把这个 UI **升级为真正的 Web3 DApp**。
+
+届时你将实现：
+
+```
+钱包连接
+读取链上数据
+发起交易
+```
+
+最终完成一个 **完整可用的 DeFi 前端应用**。
+
+**在 Week6 中，我们将开始让这个 UI 连接真实的区块链。**
